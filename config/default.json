@@ -1,0 +1,9 @@
+{
+    "db": {
+        "config": {
+            "host": "localhost",
+            "port": 3306,
+            "connectionLimit": 10
+        }
+    }
+}

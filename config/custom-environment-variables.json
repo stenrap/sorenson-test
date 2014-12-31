@@ -1,0 +1,8 @@
+{
+    "db": {
+        "config": {
+            "user": "POLARIS_DB_USER",
+            "password": "POLARIS_DB_PASSWORD"
+        }
+    }
+}
