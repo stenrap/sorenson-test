@@ -31,6 +31,7 @@ block content
             span.glyphicon.glyphicon-plus
             | &nbsp;Add Video
     if videoId
-      p Congratulations! You added video #{videoId} to the database!
+      .message.text-center
+        p Success! Your video was added to the library.
 block scripts
   include ./includes/scripts
