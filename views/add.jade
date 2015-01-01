@@ -30,5 +30,7 @@ block content
           button.btn.btn-default.btn-white(type='submit')
             span.glyphicon.glyphicon-plus
             | &nbsp;Add Video
+    if videoId
+      p Congratulations! You added video #{videoId} to the database!
 block scripts
   include ./includes/scripts

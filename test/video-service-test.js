@@ -5,6 +5,24 @@ describe('Video service', function() {
   var videoService = require('../services/video-service').init(dbConfig);
   var videoId = 0;
   after(videoService.shutDown);
+  
+  it('should process strings of multiple producer/actor names', function() {
+    var rawProducers = 'John Hughes, James Cameron , Gale Anne Hurd';
+    var formattedProducers = videoService.formatMultipleNames(rawProducers);
+    expect(formattedProducers).to.equal('John Hughes,James Cameron,Gale Anne Hurd');
+  });
+
+  it('should process strings of single producer/actor names', function() {
+    var rawActors = 'Sigourney Weaver';
+    var formattedActors = videoService.formatMultipleNames(rawActors);
+    expect(formattedActors).to.equal('Sigourney Weaver');
+  });
+
+  it('should process strings of single producer/actor names with trailing comma', function() {
+    var rawActors = 'Sigourney Weaver,';
+    var formattedActors = videoService.formatMultipleNames(rawActors);
+    expect(formattedActors).to.equal('Sigourney Weaver');
+  });
 
   it('should support creating a video', function(done) {
     videoService.createVideo('Aliens', 'A sci-fi thriller!', 'Gale Anne Hurd', 'Sigourney Weaver,Michael Biehn', function(id) {

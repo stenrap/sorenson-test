@@ -4,9 +4,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var dbConfig = require('config').get('db.config');
+var videoService = require('./services/video-service').init(dbConfig);
 
 var index = require('./routes/index');
-var add   = require('./routes/add');
+var add = require('./routes/add')(videoService);
 
 var app = express();
 

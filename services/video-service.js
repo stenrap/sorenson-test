@@ -3,6 +3,21 @@ var pool = null;
 
 module.exports = {
 
+  formatMultipleNames: function(rawNameString) {
+    var pattern = /\s*,\s*/;
+    var nameList = rawNameString.split(pattern);
+    var formattedNameString = '';
+    nameList.forEach(function(currentName) {
+      if (formattedNameString.length > 0 && currentName.length > 0) {
+        formattedNameString += ',';
+      }
+      if (currentName.length > 0) {
+        formattedNameString += currentName;
+      }
+    });
+    return formattedNameString;
+  },
+  
   init: function(dbConfig) {
     pool = mysql.createPool({
       host: dbConfig.get('host'),
