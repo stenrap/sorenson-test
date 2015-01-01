@@ -35,8 +35,18 @@ body {
 
 .add-form {
     background-color: rgba(255,255,255,0.2);
-    border-radius: 4px;
+    border-radius: 6px;
     margin: 0 auto;
     padding: 20px;
-    width: 50%;
+    width: 100%;
+}
+
+/*---------- min-width 769 px ----------*/
+
+@media screen and (min-width: 769px) {
+
+    .add-form {
+        width: 50%;
+    }
+    
 }

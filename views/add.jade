@@ -5,16 +5,30 @@ block content
     h1.text-center.text-white Add a Video
     hr
     .add-form.text-center.margin-top-40
-      form
+      form(method='post')
         .form-group
           .input-group
             span.input-group-addon
               span.glyphicon.glyphicon-film
-            input#title.form-control(type='text', name='title', placeholder='Enter title')
+            input#title.form-control(type='text', name='title', placeholder='Title', autofocus, required)
         .form-group
           .input-group
             span.input-group-addon
               span.glyphicon.glyphicon-picture
-            input#description.form-control(type='text', name='description', placeholder='Enter description')
+            input#description.form-control(type='text', name='description', placeholder='Description', required)
+        .form-group
+          .input-group
+            span.input-group-addon
+              span.glyphicon.glyphicon-usd
+            input#producers.form-control(type='text', name='producers', placeholder='Producer(s)', data-input-focus='tooltip', required)
+        .form-group
+          .input-group
+            span.input-group-addon
+              span.glyphicon.glyphicon-user
+            input#actors.form-control(type='text', name='actors', placeholder='Actor(s)', data-input-focus='tooltip', required)
+        .text-center
+          button.btn.btn-default.btn-white(type='submit')
+            span.glyphicon.glyphicon-plus
+            | &nbsp;Add Video
 block scripts
   include ./includes/scripts
