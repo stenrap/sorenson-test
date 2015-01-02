@@ -3,8 +3,10 @@ var router = express.Router();
 var videoService = null;
 
 router.get('/', function(req, res) {
-  res.render('add', {
-    pageTitle: '✧ Polaris - Add Video'
+  var results = {pageTitle: '✧ Polaris - Video List', videos: [], previous: 0, next: 2};
+  videoService.listVideos(1, function(videos) {
+    results.videos = videos;
+    res.render('list', results);
   });
 });
 

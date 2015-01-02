@@ -1,0 +1,44 @@
+extends layout
+
+block content
+  .container
+    h1.text-center.text-white Video List
+    hr
+    .actor-form.text-center.margin-top-40
+      form.form-inline(method='post')
+        .form-group
+          label Filter by actor:
+          input#byActorName.form-control(type='text', placeholder='name')
+      if videos.length > 0
+        .table-responsive
+          table#videoList.table.table-bordered
+            tr
+              th Title
+              th Description
+              th Producer(s)
+              th Actor(s)
+              th &nbsp;
+              th &nbsp;
+            for video in videos
+              tr
+                td #{video.title}
+                td #{video.description}
+                td #{video.producers}
+                td #{video.actors}
+                td ...
+                td ...
+          if videos[0].pages > 1
+            nav
+              ul.pagination.pagination-lg
+                li
+                  a(href='#', aria-label='Previous', data-page='#{previous}')
+                    span(aria-hidden='true') &larr;
+                - var p = 1
+                while p <= videos[0].pages
+                  li
+                    a.pagination-link(href='#', data-page='#{p}') #{p++}
+                li
+                  a(href='#', aria-label='Next', data-page='#{next}')
+                    span(aria-hidden='true') &rarr;
+block scripts
+  include ./includes/scripts

@@ -33,12 +33,16 @@ body {
     margin-left: 10px;
 }
 
-.add-form, .message {
+.add-form, .message, .actor-form {
     background-color: rgba(255,255,255,0.2);
     border-radius: 6px;
     margin: 0 auto;
     padding: 20px;
     width: 100%;
+}
+
+.actor-form {
+    background-color: rgba(255,255,255,0.875);
 }
 
 .message {
@@ -50,12 +54,40 @@ body {
     margin: 0;
 }
 
+.actor-form {
+    color: #000000;
+}
+
+#byActorName {
+    margin-left: 10px;
+}
+
+#videoList {
+    margin-top: 20px;
+}
+
+#videoList th, #videoList td {
+    border-color: #000000;
+}
+
+.table th {
+    text-align: center;
+}
+
+.table td {
+    text-align: left;
+}
+
 /*---------- min-width 769 px ----------*/
 
 @media screen and (min-width: 769px) {
 
     .add-form, .message {
         width: 50%;
+    }
+    
+    .actor-form {
+        width: 87.5%;
     }
     
 }
