@@ -28,6 +28,7 @@ block content
                 td ...
                 td ...
           if videos[0].pages > 1
+            input(type='hidden', name='current', value='#{current}')
             nav
               ul.pagination.pagination-lg
                 li

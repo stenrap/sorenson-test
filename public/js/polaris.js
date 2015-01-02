@@ -1,3 +1,7 @@
+'use strict';
+var POLARIS = POLARIS || {};
+Backbone.View.prototype.eventAggregator = Backbone.View.prototype.eventAggregator || _.extend({}, Backbone.Events);
+
 $(function() {
   
   $('[data-input-focus="tooltip"]').popover({
@@ -7,5 +11,9 @@ $(function() {
     placement: 'top',
     trigger: 'focus'
   });
+  
+  if ($('.actor-form')) {
+    // WYLO .... Create _and instantiate_ a Backbone view for the list form
+  }
   
 });

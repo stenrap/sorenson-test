@@ -3,21 +3,6 @@ var pool = null;
 
 module.exports = {
 
-  formatMultipleNames: function(rawNameString) {
-    var pattern = /\s*,\s*/;
-    var nameList = rawNameString.split(pattern);
-    var formattedNameString = '';
-    nameList.forEach(function(currentName) {
-      if (formattedNameString.length > 0 && currentName.length > 0) {
-        formattedNameString += ',';
-      }
-      if (currentName.length > 0) {
-        formattedNameString += currentName;
-      }
-    });
-    return formattedNameString;
-  },
-  
   init: function(dbConfig) {
     pool = mysql.createPool({
       host: dbConfig.get('host'),
@@ -33,6 +18,21 @@ module.exports = {
     return this;
   },
 
+  formatMultipleNames: function(rawNameString) {
+    var pattern = /\s*,\s*/;
+    var nameList = rawNameString.split(pattern);
+    var formattedNameString = '';
+    nameList.forEach(function(currentName) {
+      if (formattedNameString.length > 0 && currentName.length > 0) {
+        formattedNameString += ',';
+      }
+      if (currentName.length > 0) {
+        formattedNameString += currentName;
+      }
+    });
+    return formattedNameString;
+  },
+
   createVideo: function(title, description, producers, actors, callback) {
     pool.getConnection(function(err, connection) {
       if (err) throw err;
@@ -43,35 +43,52 @@ module.exports = {
       });
     });
   },
+  
+  fixCommas: function(results) {
+    results.forEach(function(currentVideo) {
+      if (currentVideo.producers) {
+        currentVideo.producers = currentVideo.producers.replace(/,/g, ', ');
+      }
+      if (currentVideo.actors) {
+        currentVideo.actors = currentVideo.actors.replace(/,/g, ', ');
+      }
+    });
+  },
 
   listVideos: function(pageNum, callback) {
+    var self = this;
     pool.getConnection(function(err, connection) {
       if (err) throw err;
       connection.query('CALL readVideos(?)', [pageNum], function(err, results) {
         if (err) throw err;
         connection.release();
+        self.fixCommas(results[0]);
         callback(results[0]);
       });
     });
   },
 
   listVideosByActor: function(actorId, pageNum, callback) {
+    var self = this;
     pool.getConnection(function(err, connection) {
       if (err) throw err;
       connection.query('CALL readVideosByActor(?,?)', [actorId, pageNum], function(err, results) {
         if (err) throw err;
         connection.release();
+        self.fixCommas(results[0]);
         callback(results[0]);
       });
     });
   },
 
   getVideo: function(videoId, callback) {
+    var self = this;
     pool.getConnection(function(err, connection) {
       if (err) throw err;
       connection.query('CALL getVideo(?)', [videoId], function(err, results) {
         if (err) throw err;
         connection.release();
+        self.fixCommas(results[0]);
         callback(results[0]);
       });
     });
