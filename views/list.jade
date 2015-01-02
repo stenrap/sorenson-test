@@ -32,14 +32,14 @@ block content
             nav
               ul.pagination.pagination-lg
                 li
-                  a(href='#', aria-label='Previous', data-page='#{previous}')
+                  a#previous(href='#', aria-label='Previous', data-page='#{previous}')
                     span(aria-hidden='true') &larr;
                 - var p = 1
                 while p <= videos[0].pages
                   li
                     a.pagination-link(href='#', data-page='#{p}') #{p++}
                 li
-                  a(href='#', aria-label='Next', data-page='#{next}')
+                  a#next(href='#', aria-label='Next', data-page='#{next}')
                     span(aria-hidden='true') &rarr;
 block scripts
   include ./includes/scripts
