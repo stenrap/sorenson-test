@@ -17,13 +17,17 @@ $(function() {
       
       initialize: function() {
         this.render();
+        // Initialize the previous and next data- attributes
+        $('#previous').data('page');
+        $('#next').data('page');
       },
       
       render: function() {
         $('#byActorName').prop('disabled', false);
         var currentInput = $('input[name="current"]');
+        var currentPage = 0;
         if (currentInput) {
-          var currentPage = currentInput.val();
+          currentPage = currentInput.val();
           var previous = $('#previous').parent();
           if (currentPage == 1) {
             previous.addClass('disabled');
@@ -32,13 +36,23 @@ $(function() {
           }
           $('.pagination-link').each(function() {
             var page = $(this).parent();
+            page.removeClass('disabled');
             if ($(this).data('page') == currentPage) {
               page.addClass('active');
             } else {
               page.removeClass('active');
             }
           });
-          // TODO: Disable or enable #next (perhaps by adding a hidden input whose value is the total number of pages)
+          var pagesInput = $('input[name="pages"]');
+          if (pagesInput) {
+            var totalPages = Number(pagesInput.val());
+            var next = $('#next').parent();
+            if (currentPage == 0 || Number($('#next').data('page')) > totalPages) {
+              next.addClass('disabled');
+            } else {
+              next.removeClass('disabled');
+            }
+          }
         }
       },
       
@@ -50,7 +64,7 @@ $(function() {
       
       onPageClick: function(event) {
         event.preventDefault();
-        var parent = $(event.target).parent();
+        var parent = $(event.currentTarget).parent();
         if (parent.hasClass('disabled') || parent.hasClass('active')) {
           return;
         }
@@ -63,7 +77,37 @@ $(function() {
           var page = $(this).parent();
           page.addClass('disabled');
         });
-        // WYLO .... Get the page number, make a POST to /list, then call render() in $.ajax().done()
+        var view = this;
+        $.ajax({
+          data: {
+            pageNumber: $(event.currentTarget).data('page'),
+            current: $('input[name="current"]').val(),
+            actorName: $('#byActorName').val()
+          },
+          dataType: 'json',
+          type: 'POST'
+        }).done(function(model) {
+          console.log("The model returned by the POST to /list is: "+model);
+          $('.video-row').remove();
+          var videoList = $('#videoList');
+          model.videos.forEach(function(currentVideo) {
+            videoList.append(
+              '<tr class="video-row">' +
+                '<td>'+currentVideo.title+'</td>' +
+                '<td>'+currentVideo.description+'</td>' +
+                '<td>'+currentVideo.producers+'</td>' +
+                '<td>'+currentVideo.actors+'</td>' +
+                '<td>...</td>' +
+                '<td>...</td>' +
+              '</tr>'
+            );
+          });
+          $('#previous').data('page', model.previous);
+          $('input[name="current"]').val(model.current);
+          $('#next').data('page', model.next);
+          $('input[name="pages"]').val(model.videos[0].pages);
+          view.render();
+        });
       }
       
     });

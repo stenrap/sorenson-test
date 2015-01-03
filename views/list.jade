@@ -20,7 +20,7 @@ block content
               th &nbsp;
               th &nbsp;
             for video in videos
-              tr
+              tr.video-row
                 td #{video.title}
                 td #{video.description}
                 td #{video.producers}
@@ -29,6 +29,7 @@ block content
                 td ...
           if videos[0].pages > 1
             input(type='hidden', name='current', value='#{current}')
+            input(type='hidden', name='pages', value='#{videos[0].pages}')
             nav
               ul.pagination.pagination-lg
                 li

@@ -3,29 +3,33 @@ var router = express.Router();
 var videoService = null;
 
 router.get('/', function(req, res) {
-  var results = {pageTitle: '✧ Polaris - Video List', videos: [], previous: 0, current: 1, next: 2};
   videoService.listVideos(1, function(videos) {
-    results.videos = videos;
+    var results = {
+      pageTitle: '✧ Polaris - Video List',
+      videos: videos,
+      previous: 0,
+      current: 1,
+      next: 2
+    };
     res.render('list', results);
   });
 });
 
 router.post('/', function(req, res) {
-  var title = req.body.title;
-  var description = req.body.description;
-  var rawProducerString = req.body.producers;
-  var rawActorString = req.body.actors;
-  var result = {pageTitle: '✧ Polaris - Add Video'};
-  if (title && description && rawProducerString && rawActorString) {
-    var producers = videoService.formatMultipleNames(rawProducerString);
-    var actors = videoService.formatMultipleNames(rawActorString);
-    videoService.createVideo(title, description, producers, actors, function(videoId) {
-      result.videoId = videoId;
-      res.render('add', result);
-    });
-  } else {
-    res.render('add', result);
+  var pageNumber = Number(req.body.pageNumber);
+  if (pageNumber < 1) {
+    pageNumber = 1;
   }
+  videoService.listVideos(pageNumber, function(videos) {
+    var results = {
+      pageTitle: '✧ Polaris - Video List',
+      videos: videos,
+      previous: pageNumber - 1,
+      current: pageNumber,
+      next: pageNumber + 1
+    };
+    res.send(results);
+  });
 });
 
 module.exports = function(vidService) {
