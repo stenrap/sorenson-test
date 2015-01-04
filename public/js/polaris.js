@@ -4,6 +4,9 @@ Backbone.View.prototype.eventAggregator = Backbone.View.prototype.eventAggregato
 
 $(function() {
   
+  var timeOutId;
+  var actorName = "";
+  
   $('[data-input-focus="tooltip"]').popover({
     container: 'body',
     content: 'Provide a comma-separated list:<br>John Hughes, James Cameron',
@@ -57,6 +60,7 @@ $(function() {
       },
       
       events: {
+        'keyup #byActorName': 'onActorChange',
         'click .btn-edit': 'onEditClick',
         'click #editSubmit': 'onEditSubmitClick',
         'click .btn-delete': 'onDeleteClick',
@@ -64,6 +68,19 @@ $(function() {
         'click #previous': 'onPageClick',
         'click .pagination-link': 'onPageClick',
         'click #next': 'onPageClick'
+      },
+
+      onActorChange: function(event) {
+        if (timeOutId) {
+          window.clearTimeout(timeOutId);
+        }
+        timeOutId = window.setTimeout(function() {
+            if (actorName.toLowerCase() !== $(event.target).val().toLowerCase() && $(event.target).val().length > 0) {
+              actorName = $(event.target).val();
+              console.log('Filtering by actor name: '+actorName);
+              // WYLO .... Filter by actor name (don't forget to handle the case where the name is "")
+            }
+        }, 750);
       },
 
       onEditClick: function(event) {
