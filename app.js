@@ -10,6 +10,7 @@ var videoService = require('./services/video-service').init(dbConfig);
 var index = require('./routes/index');
 var add = require('./routes/add')(videoService);
 var list = require('./routes/list')(videoService);
+var edit = require('./routes/edit')(videoService);
 
 var app = express();
 
@@ -28,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/add', add);
 app.use('/list', list);
+app.use('/edit', edit);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

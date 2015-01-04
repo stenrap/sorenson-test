@@ -33,12 +33,16 @@ body {
     margin-left: 10px;
 }
 
-.add-form, .message, .actor-form {
+.add-form, .message, .actor-form, .edit-form {
     background-color: rgba(255,255,255,0.2);
     border-radius: 6px;
     margin: 0 auto;
     padding: 20px;
     width: 100%;
+}
+
+.edit-form {
+    padding: 20px 20px 0 20px;
 }
 
 .actor-form {
@@ -78,16 +82,16 @@ body {
     text-align: left;
 }
 
+.alert {
+    margin-bottom: 0;
+}
+
 /*---------- min-width 769 px ----------*/
 
 @media screen and (min-width: 769px) {
 
     .add-form, .message {
         width: 50%;
-    }
-    
-    .actor-form {
-        width: 87.5%;
     }
     
 }

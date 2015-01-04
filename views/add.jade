@@ -32,6 +32,6 @@ block content
             | &nbsp;Add Video
     if videoId
       .message.text-center
-        p Success! Your video was added to the library.
+        .alert.alert-success(role='alert')  Success! Your video was added to the library.
 block scripts
   include ./includes/scripts

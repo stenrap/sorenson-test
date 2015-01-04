@@ -17,7 +17,7 @@ $(function() {
       
       initialize: function() {
         this.render();
-        // Initialize the previous and next data- attributes
+        // Initialize the previous and next data-page attributes
         $('#previous').data('page');
         $('#next').data('page');
       },
@@ -57,9 +57,60 @@ $(function() {
       },
       
       events: {
+        'click .btn-edit': 'onEditClick',
+        'click #editSubmit': 'onEditSubmitClick',
         'click #previous': 'onPageClick',
         'click .pagination-link': 'onPageClick',
         'click #next': 'onPageClick'
+      },
+
+      onEditClick: function(event) {
+        $('.edit-success').addClass('hidden');
+        $(event.currentTarget).closest('.video-row').children('td').each(function(index) {
+          var content = $(this).html();
+          if (index == 0) {
+            $('#title').val(content);
+          } else if (index == 1) {
+            $('#description').val(content);
+          } else if (index == 2) {
+            $('#producers').val(content);
+          } else if (index == 3) {
+            $('#actors').val(content);
+          }
+        });
+        $('#editId').val($(event.currentTarget).data('edit-id'));
+        $('#editSubmit').removeClass('disabled');
+      },
+
+      onEditSubmitClick: function(event) {
+        $('#editSubmit').addClass('disabled');
+        var id = $('#editId').val();
+        var view = this;
+        $.ajax({
+          data: {
+            id: id,
+            title: $('#title').val(),
+            description: $('#description').val(),
+            producers: $('#producers').val(),
+            actors: $('#actors').val()
+          },
+          type: 'PUT',
+          url: '/edit'
+        }).done(function() {
+          $('[data-edit-id="'+id+'"]').closest('.video-row').children('td').each(function(index) {
+            if (index == 0) {
+              $(this).html($('#title').val());
+            } else if (index == 1) {
+              $(this).html($('#description').val());
+            } else if (index == 2) {
+              $(this).html($('#producers').val());
+            } else if (index == 3) {
+              $(this).html($('#actors').val());
+            }
+          });
+          $('.edit-success').removeClass('hidden');
+          $('#editSubmit').removeClass('disabled');
+        });
       },
       
       onPageClick: function(event) {
@@ -97,7 +148,11 @@ $(function() {
                 '<td>'+currentVideo.description+'</td>' +
                 '<td>'+currentVideo.producers+'</td>' +
                 '<td>'+currentVideo.actors+'</td>' +
-                '<td>...</td>' +
+                '<td>' +
+                  '<button type="button" class="btn btn-default btn-edit" data-toggle="modal" data-target="#edit" data-edit-id="'+currentVideo.videoId+'">' +
+                    '<span class="glyphicon glyphicon-pencil"></span> Edit' +
+                  '</button>' +
+                '</td>' +
                 '<td>...</td>' +
               '</tr>'
             );
