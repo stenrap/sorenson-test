@@ -59,6 +59,8 @@ $(function() {
       events: {
         'click .btn-edit': 'onEditClick',
         'click #editSubmit': 'onEditSubmitClick',
+        'click .btn-delete': 'onDeleteClick',
+        'click #deleteSubmit': 'onDeleteSubmitClick',
         'click #previous': 'onPageClick',
         'click .pagination-link': 'onPageClick',
         'click #next': 'onPageClick'
@@ -85,7 +87,6 @@ $(function() {
       onEditSubmitClick: function(event) {
         $('#editSubmit').addClass('disabled');
         var id = $('#editId').val();
-        var view = this;
         $.ajax({
           data: {
             id: id,
@@ -110,6 +111,27 @@ $(function() {
           });
           $('.edit-success').removeClass('hidden');
           $('#editSubmit').removeClass('disabled');
+        });
+      },
+
+      onDeleteClick: function(event) {
+        $('#sure').removeClass('hidden');
+        $('.delete-success').addClass('hidden');
+        $('#deleteId').val($(event.currentTarget).data('delete-id'));
+        $('#deleteSubmit').removeClass('disabled');
+      },
+
+      onDeleteSubmitClick: function(event) {
+        $('#deleteSubmit').addClass('disabled');
+        var id = $('#deleteId').val();
+        $.ajax({
+          data: {id:id},
+          type: 'DELETE',
+          url: '/edit'
+        }).done(function() {
+          $('[data-delete-id="'+id+'"]').closest('.video-row').remove();
+          $('#sure').addClass('hidden');
+          $('.delete-success').removeClass('hidden');
         });
       },
       
@@ -153,7 +175,11 @@ $(function() {
                     '<span class="glyphicon glyphicon-pencil"></span> Edit' +
                   '</button>' +
                 '</td>' +
-                '<td>...</td>' +
+                '<td>' +
+                  '<button type="button" class="btn btn-default btn-delete" data-toggle="modal" data-target="#delete" data-delete-id="'+currentVideo.videoId+'">' +
+                    '<span class="glyphicon glyphicon-remove"></span> Delete' +
+                  '</button>' +
+                '</td>' +
               '</tr>'
             );
           });

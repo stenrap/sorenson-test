@@ -29,7 +29,10 @@ block content
                   button.btn.btn-default.btn-edit(type='button', data-toggle='modal', data-target='#edit', data-edit-id='#{video.videoId}')
                     span.glyphicon.glyphicon-pencil
                     | &nbsp;Edit
-                td ...
+                td
+                  button.btn.btn-default.btn-delete(type='button', data-toggle='modal', data-target='#delete', data-delete-id='#{video.videoId}')
+                    span.glyphicon.glyphicon-remove
+                    | &nbsp;Delete
           if videos[0].pages > 1
             input(type='hidden', name='current', value='#{current}')
             input(type='hidden', name='pages', value='#{videos[0].pages}')
@@ -76,9 +79,24 @@ block content
                         span.glyphicon.glyphicon-user
                       input#actors.form-control(type='text', name='actors', placeholder='Actor(s)', data-input-focus='tooltip', required)
                   input#editId(type='hidden', value='0')
-                  .alert.alert-success.edit-success(role='alert') Success! Your video was updated in the library.
+                  .alert.alert-success.edit-success(role='alert') Success! The video was updated in the library.
             .modal-footer
               button.btn.btn-default(type='button', data-dismiss='modal') Cancel
               button.btn.btn-primary(type='button', id='editSubmit') Submit
+      #delete.modal.fade(tabIndex="-1", role='dialog', aria-labelledby='deleteLabel', aria-hidden='true')
+        .modal-dialog
+          .modal-content
+            .modal-header
+              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true') &times;
+              h4.modal-title(id='editLabel') Please Confirm
+            .modal-body
+              .delete-form.text-center
+                p#sure Are you sure you want to delete this video from the library?
+                input#deleteId(type='hidden', value='0')
+                .alert.alert-success.delete-success(role='alert') Success! The video was deleted from the library.
+            .modal-footer
+              button.btn.btn-primary(type='button', data-dismiss='modal') No
+              button.btn.btn-default(type='button', id='deleteSubmit') Yes
 block scripts
   include ./includes/scripts

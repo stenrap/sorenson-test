@@ -33,7 +33,7 @@ body {
     margin-left: 10px;
 }
 
-.add-form, .message, .actor-form, .edit-form {
+.add-form, .message, .actor-form, .edit-form, .delete-form {
     background-color: rgba(255,255,255,0.2);
     border-radius: 6px;
     margin: 0 auto;
@@ -41,7 +41,7 @@ body {
     width: 100%;
 }
 
-.edit-form {
+.edit-form, .delete-form {
     padding: 20px 20px 0 20px;
 }
 

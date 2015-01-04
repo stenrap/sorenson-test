@@ -17,6 +17,15 @@ router.put('/', function(req, res) {
   }
 });
 
+router.delete('/', function(req, res) {
+  var id = req.body.id;
+  if (id) {
+    videoService.deleteVideo(id, function() {
+      res.sendStatus(200);
+    });
+  }
+});
+
 module.exports = function(vidService) {
   videoService = vidService;
   return router;
