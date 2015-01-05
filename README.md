@@ -19,8 +19,9 @@ This section describes how to obtain, set up, and run Polaris.
 2. Install [MySQL](http://dev.mysql.com/downloads/mysql/) (v5.6.22 was used during development).
 3. Declare the following environment variables with the appropriate values for the database username/password you will use:
 
-   POLARIS_DB_USER
-   POLARIS_DB_PASSWORD
+   `POLARIS_DB_USER`
+   
+   `POLARIS_DB_PASSWORD`
 4. Clone this project:
    
    `git clone https://github.com/stenrap/sorenson-test.git`
