@@ -28,13 +28,16 @@ This section describes how to obtain, set up, and run Polaris.
 5. From the project root, and with the appropriate MySQL permissions, execute the sql/setup.sql script. For example:
    
    `mysql -u root -p < sql/setup.sql`
-6. Install Mocha:
+6. From the project root, execute the following command to install the required node packages:
+
+   `npm install`
+7. Install Mocha:
    
    `npm install -g mocha`
-7. To execute the project's tests at any time, simply execute this command from the project root:
+8. To execute the project's tests at any time, simply execute this command from the project root:
    
    `mocha`
-8. To launch Polaris, execute this command from the project root:
+9. To launch Polaris, execute this command from the project root:
    
    `node bin/www`
 
