@@ -19,7 +19,7 @@ This section describes how to obtain, set up, and run Polaris.
 2. Install [MySQL](http://dev.mysql.com/downloads/mysql/) (v5.6.22 was used during development).
 3. Clone this project:
    `git clone https://github.com/stenrap/sorenson-test.git`
-4. From the root of the project directory, and with the appropriate MySQL permissions, execute the sql/setup.sql script. For example:
+4. From the project root, and with the appropriate MySQL permissions, execute the sql/setup.sql script. For example:
    `mysql -u root -p < sql/setup.sql`
 5. Install Mocha:
    `npm install -g mocha`
@@ -38,3 +38,6 @@ Known Issues
 
 Learnings and Trade-Offs
 -----
+* I really enjoyed learning Node.js, Express, and Jade. I'll definitely be using all of them on a future project.
+* Some aspects of Polaris render their results instead of returning them like a true web service should. Other aspects of Polaris provide true web service functionality by returning a JSON object that could be used by any application. This is a byproduct of developing both a web service and a sample application simultaneously using technologies and frameworks new to me, and sometimes mixing them too closely.
+* Initially I wanted to give the MEAN stack a try for this project (MongoDB, Express, AngularJS, and Node), but I decided to "fail early" on both MongoDB and AngularJS. I wanted to be able to use join relationships, so I switched to a relational database; and after reading the AngularJS documentation for a few hours and developing a headache, I decided against it.
