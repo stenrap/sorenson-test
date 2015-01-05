@@ -219,42 +219,37 @@ CREATE PROCEDURE videodb.readVideos(pgNum INT)
 DELIMITER ;
 /*
 mysql> CALL readVideos(2);
-+---------+----------------+--------------------+---------------------------+--------------------------------+
-| videoId | title          | description        | producer                  | actor                          |
-+---------+----------------+--------------------+---------------------------+--------------------------------+
-|      11 | Aliens         | A sci-fi thriller! | Gale Anne Hurd            | Michael Biehn,Sigourney Weaver |
-|      13 | Breakfast Club | A real thriller.   | John Hughes,James Cameron | Sigourney Weaver,Michael Biehn |
-|      12 | Ghostbusters   | A real thriller.   | John Hughes,James Cameron | Sigourney Weaver,Michael Biehn |
-+---------+----------------+--------------------+---------------------------+--------------------------------+
++---------+----------------+--------------------+---------------------------+--------------------------------+-------+
+| videoId | title          | description        | producer                  | actor                          | pages |
++---------+----------------+--------------------+---------------------------+--------------------------------+-------+
+|      11 | Aliens         | A sci-fi thriller! | Gale Anne Hurd            | Michael Biehn,Sigourney Weaver |     2 |
+|      13 | Breakfast Club | A real thriller.   | John Hughes,James Cameron | Sigourney Weaver,Michael Biehn |     2 |
+|      12 | Ghostbusters   | A real thriller.   | John Hughes,James Cameron | Sigourney Weaver,Michael Biehn |     2 |
++---------+----------------+--------------------+---------------------------+--------------------------------+-------+
 */
 
 DROP PROCEDURE IF EXISTS videodb.readVideosByActor;
 DELIMITER //
-CREATE PROCEDURE videodb.readVideosByActor(actId INT, pgNum INT)
+CREATE PROCEDURE videodb.readVideosByActor(actorName VARCHAR(500), pgNum INT)
 	BEGIN
-		SET @actorId = actId;
+		SET @actorName = CONCAT('%', actorName, '%');
 		SET @pageNumber = (pgNum - 1) * 10;
-		SET @videoSelectVar = CONCAT('SELECT v.id, v.title ',
-		                             'FROM videodb.actors a ',
-		                             'JOIN videodb.video_actor va ON va.actor_id = a.id ',
-		                             'JOIN videodb.videos v ON v.id = va.video_actor_id ',
-		                             'WHERE a.id = ? ',
+		SET @videoSelectVar = CONCAT('SELECT DISTINCT SQL_CALC_FOUND_ROWS v.id AS videoId, v.title, v.description, GROUP_CONCAT(DISTINCT p.name) AS producers, GROUP_CONCAT(DISTINCT a.name) AS actors ',
+		                             'FROM videodb.videos v ',
+		                             'JOIN videodb.video_producer vp ON vp.video_producer_id = v.id ',
+		                             'JOIN videodb.video_actor va ON va.video_actor_id = v.id ',
+		                             'JOIN videodb.producers p ON p.id = vp.producer_id ',
+		                             'JOIN videodb.actors a ON a.id = va.actor_id WHERE a.name LIKE ? ',
+		                             'GROUP BY v.id ',
 		                             'ORDER BY v.title ASC ',
 		                             'LIMIT ?, 10');
 		PREPARE videoSelectStmt FROM @videoSelectVar;
-		EXECUTE videoSelectStmt USING @actorId, @pageNumber;
+		EXECUTE videoSelectStmt USING @actorName, @pageNumber;
 		DEALLOCATE PREPARE videoSelectStmt;
+		SELECT CEIL(FOUND_ROWS() / 10) AS pages;
 	END
 	//
 DELIMITER ;
-/*
-+----+------------+
-| id | title      |
-+----+------------+
-|  1 | Aliens     |
-|  2 | Terminator |
-+-----------------+
-*/
 
 DROP PROCEDURE IF EXISTS videodb.getVideo;
 DELIMITER //

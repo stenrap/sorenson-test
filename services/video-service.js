@@ -68,14 +68,17 @@ module.exports = {
     });
   },
 
-  listVideosByActor: function(actorId, pageNum, callback) {
+  listVideosByActor: function(actorName, pageNum, callback) {
     var self = this;
     pool.getConnection(function(err, connection) {
       if (err) throw err;
-      connection.query('CALL readVideosByActor(?,?)', [actorId, pageNum], function(err, results) {
+      connection.query('CALL readVideosByActor(?,?)', [actorName, pageNum], function(err, results) {
         if (err) throw err;
         connection.release();
         self.fixCommas(results[0]);
+        if (results[0][0]) {
+          results[0][0].pages = results[1][0].pages; // Append the number of pages
+        }
         callback(results[0]);
       });
     });

@@ -4,9 +4,6 @@ Backbone.View.prototype.eventAggregator = Backbone.View.prototype.eventAggregato
 
 $(function() {
   
-  var timeOutId;
-  var actorName = "";
-  
   $('[data-input-focus="tooltip"]').popover({
     container: 'body',
     content: 'Provide a comma-separated list:<br>John Hughes, James Cameron',
@@ -23,6 +20,9 @@ $(function() {
         // Initialize the previous and next data-page attributes
         $('#previous').data('page');
         $('#next').data('page');
+        if ($('#byActorName').val().length > 0) {
+          $('#actorFilterSubmit').removeClass('disabled');
+        }
       },
       
       render: function() {
@@ -60,7 +60,8 @@ $(function() {
       },
       
       events: {
-        'keyup #byActorName': 'onActorChange',
+        'keydown #byActorName': 'onActorChangeDown',
+        'keyup #byActorName': 'onActorChangeUp',
         'click .btn-edit': 'onEditClick',
         'click #editSubmit': 'onEditSubmitClick',
         'click .btn-delete': 'onDeleteClick',
@@ -69,20 +70,21 @@ $(function() {
         'click .pagination-link': 'onPageClick',
         'click #next': 'onPageClick'
       },
-
-      onActorChange: function(event) {
-        if (timeOutId) {
-          window.clearTimeout(timeOutId);
+      
+      onActorChangeDown: function(event) {
+        if (event.keyCode == 13 && $('#byActorName').val().length == 0) {
+          event.preventDefault();
         }
-        timeOutId = window.setTimeout(function() {
-            if (actorName.toLowerCase() !== $(event.target).val().toLowerCase() && $(event.target).val().length > 0) {
-              actorName = $(event.target).val();
-              console.log('Filtering by actor name: '+actorName);
-              // WYLO .... Filter by actor name (don't forget to handle the case where the name is "")
-            }
-        }, 750);
       },
 
+      onActorChangeUp: function(event) {
+        if ($('#byActorName').val().length > 0) {
+          $('#actorFilterSubmit').removeClass('disabled');
+        } else {
+          $('#actorFilterSubmit').addClass('disabled');
+        }
+      },
+      
       onEditClick: function(event) {
         $('.edit-success').addClass('hidden');
         $(event.currentTarget).closest('.video-row').children('td').each(function(index) {
@@ -172,7 +174,8 @@ $(function() {
           data: {
             pageNumber: $(event.currentTarget).data('page'),
             current: $('input[name="current"]').val(),
-            actorName: $('#byActorName').val()
+            actorName: $('#byActorName').val(),
+            pageChange: true
           },
           dataType: 'json',
           type: 'POST'

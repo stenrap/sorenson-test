@@ -8,7 +8,10 @@ block content
       form.form-inline(method='post')
         .form-group
           label Filter by actor:
-          input#byActorName.form-control(type='text', placeholder='name')
+          input#byActorName.form-control(type='text', name='actorName', placeholder='name', value='#{actorName || ""}')
+          button#actorFilterSubmit.btn.btn-default.disabled(type='submit')
+            span.glyphicon.glyphicon-filter
+            | &nbsp;Filter
       if videos.length > 0
         .table-responsive
           table#videoList.table.table-bordered

@@ -40,9 +40,9 @@ describe('Video service', function() {
   });
 
   it('should support listing videos by actor', function(done) {
-    videoService.listVideosByActor(1, 1, function(results) {
+    videoService.listVideosByActor('Sigourney Weaver', 1, function(results) {
       if (results.length > 0) {
-        expect(results[0]).to.have.property('title');
+		expect(results).to.have.length.of.at.least(1);
       }
       done();
     });
