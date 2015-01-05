@@ -17,19 +17,23 @@ This section describes how to obtain, set up, and run Polaris.
 
 1. Install [Node.js](http://nodejs.org/download/).
 2. Install [MySQL](http://dev.mysql.com/downloads/mysql/) (v5.6.22 was used during development).
-3. Clone this project:
+3. Declare the following environment variables with the appropriate values for the database username/password you will use:
+
+   POLARIS_DB_USER
+   POLARIS_DB_PASSWORD
+4. Clone this project:
    
    `git clone https://github.com/stenrap/sorenson-test.git`
-4. From the project root, and with the appropriate MySQL permissions, execute the sql/setup.sql script. For example:
+5. From the project root, and with the appropriate MySQL permissions, execute the sql/setup.sql script. For example:
    
    `mysql -u root -p < sql/setup.sql`
-5. Install Mocha:
+6. Install Mocha:
    
    `npm install -g mocha`
-6. To execute the project's tests at any time, simply execute this command from the project root:
+7. To execute the project's tests at any time, simply execute this command from the project root:
    
    `mocha`
-7. To launch Polaris, execute this command from the project root:
+8. To launch Polaris, execute this command from the project root:
    
    `node bin/www`
 
